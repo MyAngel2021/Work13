@@ -1,35 +1,41 @@
-import { fetchUsers } from './fetchUsers.mjs';
+//import { fetchUsers,printUsers } from './fetchUsersPrint.mjs';
+import * as myModule from './fetchUsersPrint.mjs'
 import sinon from 'sinon';
 import fetch from 'node-fetch';
 import {expect} from 'chai';
 //import { json } from "stream/consumers";
 
 describe('Тестирование функции fetchusers', function () {
-    let fetchStub;
+    let fetchUsersStub;
     // создадим заглушку для fetch
-    this.beforeEach(() => {
-        fetchStub=sinon.stub(fetch,'default');
+    beforeEach(() => {
+        fetchUsersStub = sinon.stub(myModule, 'fetchUsers').returns(Promise.resolve(mockData));
     });
     // восстанавливаем  после теста fetch
-    this.afterEach(()=>{
-        fetchStub.restore();
+    afterEach(() => {
+        if (fetchUsersStub) {
+            fetchUsersStub.restore();
+        }
     });
 
-    it('Должен выводить имена пользователей', async function(){
+    it('Должен выводить колличество пользователей', async function(){
         const fakeUsers = [
-            {name: 'Leanne Graham'},
             {name: 'Test TestUser1'},
+            {name : 'Test Test User2'}
         ];
-        fetchStub.resolves({
+        fetchUsersStub.stub.returns({
             ok:true,
             json: async () => fakeUsers
         });
 // заглушка для  console.log
         const consoleLogStub = sinon.stub(console,'log');
-        await fetchUsers();
+        await printUsers();
 
-        expect(consoleLogStub.callCount).to.equal(fakeUsers.length); //проверяем что выведены имена
-        expect(consoleLogStub.firstCall.args[0]).to.equal(fakeUsers[0].name); // проверяем первое имя
+
+        expect(consoleLogStub.callCount).to.equal(2); //проверяем что выведены имена
+    });
+    it ('Должен выводить имена пользователей', async function () {
+        expect(consoleLogStub.firstCall.args[0]).to.equal('Test TestUser1'); // проверяем первое имя
         consoleLogStub.restore(); // восстанавливаем оригинальный файл console.log
     });
 });

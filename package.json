@@ -1,15 +1,13 @@
 {
-  "name": "mod13",
+  "name": "work13",
   "version": "1.0.0",
-  "main": "script.js",
+  "description": "test",
+  "main": "index.js",
   "scripts": {
-    "test": "mocha",
-    "mocha:test:fetchUser": "mocha mocha/Sinon.test.mjs"
+    "test": "mocha mocha/Sinon.test.mjs"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "chai": "^5.1.2",
     "mocha": "^11.0.1",
